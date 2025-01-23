@@ -1,3 +1,59 @@
-<html>
-    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    body {
+        background-color: blanchedalmond;
+    }
+
+    #daRedBox {
+        position:absolute;
+        top:25%;
+        width: 100%;
+        height: 50%;
+        background-color:crimson;
+
+    }
+
+    .daBlueBox {
+        position: absolute;
+        top: 25%;
+        left: 25%;
+        width: 50%;
+        height: 50%;
+        background-color:cyan;
+
+    }
+
+    h1 {
+        cursor: cell;
+        position: relative;
+        text-align: center;
+        top: 25%;
+    }
+
+</style>
+
+<body>
+    <div id="daRedBox">
+        <div class="daBlueBox">
+            <h1 onclick="daAlert()">Click here!</h1>
+        </div> 
+    </div>
+
+</body>
+
+<script>
+    function daAlert() {
+        var daTime = Date();
+        alert("Hello, today is :" + daTime);
+
+    }
+</script>
+
 </html>
