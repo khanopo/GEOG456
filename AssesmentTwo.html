@@ -88,7 +88,8 @@ var map = L.map('map').setView([18.23821, -60.3509], 6);
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
 	attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC'}).addTo(map);
 
-       
+    var customPopup = "Tropical Storm Peter off the coast of Puerto Rico. 19-22 September 2021 <br/><img src='https://cdn2.picryl.com/photo/2021/09/21/goes-16-2021-09-21-1440z-308203-640.jpg' width='200px'/>";
+
     var stormIcon = L.icon({
         iconUrl: 'hurricane.png',
         iconSize: [50, 50],
@@ -97,6 +98,7 @@ var map = L.map('map').setView([18.23821, -60.3509], 6);
         L.geoJSON(stormpeter, {
         pointToLayer: function (feature, latlng) { 
         return L.marker(latlng, {icon: stormIcon});}}) 
+        .bindPopup(customPopup)
         .addTo(map); 
     
 
