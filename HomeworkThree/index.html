@@ -24,7 +24,7 @@
         </div>
 
         <div id= "descriptionbox">
-            <h1> According to the EPA, brownfields are a name for properties on which the redevelopment of may be complicated by the presence of a hazardous substance, pollutant, or contaminant. Many of these tracts of land were initially developed for industrial and commercial purposes, but are no longer used and considered a hazard for housing, schools, and other services. 
+            <h1 style="color:rgb(72, 71, 71);"> According to the EPA, brownfields are a name for properties on which the redevelopment of may be complicated by the presence of a hazardous substance, pollutant, or contaminant. Many of these tracts of land were initially developed for industrial and commercial purposes, but are no longer used and considered a hazard for housing, schools, and other services. 
                 This is a map of brownfields in Scotland, Hoke, Cumberland, and Robeson county.
             </h1>
     </div>
@@ -61,6 +61,7 @@
                 height:fit-content;
                 width:fit-content;
                 font-size: 10px;
+                
             }
 
             #map {
@@ -80,9 +81,9 @@ var map = L.map('map').setView([34.900456, -79.073459], 10);
 
 
 // adding base layers
+var esriLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',).addTo(map);
 var OSM = L.tileLayer ('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,}).addTo(map);
-var esriLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',).addTo(map);
 
 
 // defining cool icon
@@ -108,8 +109,9 @@ var geoJSONLayer = L.geoJSON(geoJSONData, {
     
 // layer control
 var baseLayers = {
-    "OpenStreetMap": OSM,
-    "Esri": esriLayer};
+    "Esri": esriLayer,
+    "OpenStreetMap": OSM
+};
 
 var overlays = {
     "Brownfield Sites": geoJSONLayer};
