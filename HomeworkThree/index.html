@@ -1,0 +1,131 @@
+<html>
+    <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>HW 3: NC Brownfields Leaflet Map</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+    </head>
+
+<script src="BF.js"></script>
+
+<body>
+        <div class = "container", id="titlebox"> 
+            <h1> HW 3: Leaflet Map of Brownfield Locations in North Carolina</h1>
+        </div>
+       
+        <div id="namebox">
+            <h3>Poutledee Khantivong</h3>
+        </div>
+
+        <div id= "descriptionbox">
+            <h1> According to the EPA, brownfields are a name for properties on which the redevelopment of may be complicated by the presence of a hazardous substance, pollutant, or contaminant. Many of these tracts of land were initially developed for industrial and commercial purposes, but are no longer used and considered a hazard for housing, schools, and other services. 
+                This is a map of brownfields in Scotland, Hoke, Cumberland, and Robeson county.
+            </h1>
+    </div>
+    
+        <div id="map"></div>
+
+        <div id="sourcesbox">
+            <h1>Where I got my data from:</h1>
+            <a href="https://www.nconemap.gov/datasets/4a6e963d9b0a4306a95fee35a5a150d1_0/explore?location=34.996831%2C-79.168990%2C9.24" 
+            target="_blank" 
+            class="source-button">
+             Click Here for Data Source
+         </a>
+        </div>
+
+
+        <style>
+            body {
+                background-color: rgb(206, 193, 172)}
+        
+            #titlebox {
+                height:fit-content;
+                width:700px;
+                font-family: Georgia, 'Times New Roman', Times, serif;}
+
+            .container {
+                height:100px;
+                width: 600px;
+                text-align: center;
+                line-height:50px;
+                margin: 0 auto}
+
+            #descriptionbox {
+                height:fit-content;
+                width:fit-content;
+                font-size: 10px;
+            }
+
+            #map {
+                width: 1200px; 
+                height: 600px; 
+                background-color: rgb(237, 185, 100); 
+                border: 4px solid white;
+                justify-content:center;
+                margin: 0 auto}
+
+    </style>
+   
+   <script>  
+
+// map
+var map = L.map('map').setView([34.900456, -79.073459], 10);
+
+
+// adding base layers
+var OSM = L.tileLayer ('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,}).addTo(map);
+var esriLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',).addTo(map);
+
+
+// defining cool icon
+var fieldIcon = L.icon({
+        iconUrl: 'brownfieldicon.png',
+        iconSize: [50, 50],
+        popupAnchor: [10,0]});
+
+
+// GeoJSON data
+var geoJSONLayer = L.geoJSON(geoJSONData, {
+    pointToLayer: function(feature, latlng)  {
+        return L.marker(latlng, {icon:fieldIcon})
+    },
+    onEachFeature: function(feature, layer) {
+        var customPopup = 
+            "<b>Site Name:</b> " + feature.properties.BF_Name 
+            + "<br>" 
+            + "<b>Address:</b> " + feature.properties.Address + ", " + feature.properties.City + ", " + feature.properties.County;
+        layer.bindPopup(customPopup);
+    }
+      }).addTo(map);
+    
+// layer control
+var baseLayers = {
+    "OpenStreetMap": OSM,
+    "Esri": esriLayer};
+
+var overlays = {
+    "Brownfield Sites": geoJSONLayer};
+
+L.control.layers(baseLayers, overlays).addTo(map);
+
+
+    </script>
+
+
+
+
+
+</body>
+
+
+
+
+</html>
