@@ -2209,4 +2209,4 @@ var data = {
 { "type": "Feature", "properties": { "LATITUDE": 18.64121, "LONGITUDE": -92.17941, "BRIGHTNESS": 308.74, "SCAN": 1.36, "TRACK": 1.15, "ACQ_DATE": "2025-02-18", "ACQ_TIME": "1605", "SATELLITE": "T", "CONFIDENCE": 42, "VERSION": "6.1NRT", "BRIGHT_T31": 295.49, "FRP": 6.62, "DAYNIGHT": "D" }, "geometry": { "type": "Point", "coordinates": [ -92.17941, 18.64121 ] } },
 { "type": "Feature", "properties": { "LATITUDE": 18.63919, "LONGITUDE": -92.16692, "BRIGHTNESS": 315.27, "SCAN": 1.36, "TRACK": 1.16, "ACQ_DATE": "2025-02-18", "ACQ_TIME": "1605", "SATELLITE": "T", "CONFIDENCE": 53, "VERSION": "6.1NRT", "BRIGHT_T31": 295.49, "FRP": 14.4, "DAYNIGHT": "D" }, "geometry": { "type": "Point", "coordinates": [ -92.16692, 18.63919 ] } }
 ]
-}
+};
