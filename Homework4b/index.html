@@ -22,70 +22,72 @@
     tr:nth-child(even) {
         background-color: #dddddd
     }
-
-    .high {
-        background-color: lightgreen
+    
+    .high-confidence {
+    background-color: lightgreen;
     }
 
-    .medium {
-        background-color:yellow
+    .medium-confidence {
+        background-color: yellow;
     }
 
-    .low{
-        background-color: lightcoral;
+    .low-confidence {
+        background-color:lightcoral;
     }
 
 
 </style>
 
 <body>
-    <h1>(HW4b) Active Fire Data: Currently Burning Fires </h1>
-    <h2> The data in the table represents fire detection data in the USA contiguous states and Hawaii over a 7 day period. Brightness represents the temperature of the fire in Kelvin (K) as detected by a satelite's thermal infrared sensor. The higher the brightness the more intense the fire.</h2>
+    <h1 style = "font-family: 'Helvetica'; color: #007acc;">(HW4b) Active Fire Data: Currently Burning Fires </h1>
+    <h2 style = "font-family: 'Helvetica';"> The data in the table represents fire detection in the contiguous US states and Hawaii over a 7 day period.</h2>
+    <h3 style = "font-family: 'Helvetica';"> Confidence represents the likelihood that a detected hotspot is actually a fire and not indirect heat sources, where higher values indicate a higher probability that the detected thermal anomaly is indeed a fire. Brightness represents the temperature of the fire in Kelvin (K) as detected by a satelite's thermal infrared sensor. The higher the brightness the more intense the fire.</h3>
+    <h4 style = "font-family: 'Helvetica';"> Red = Low Confidence, Yellow = Medium Confidence, Green = High Confidence</h4>
+
+    
     <table id = 'fireTable'>
         <tr>
             <th>Latitude</th>
             <th>Longitude</th>
             <th>Brightness</th>
+            <th>Confidence</th>
 
         </tr>
 
     </table>
 
-<script src = "data.js">
-    console.log("GeoJSON Data Loaded")
-</script>
+<script src = "data.js"></script>
 
 <script>
-    var table = document.getElementById('fireTable')
-    for (var i =0; i ,data.length; i++){
-        var properties = feature.properties;
-        var row = document.createElement('tr');
+      var table = document.getElementById('fireTable');
 
-        var latCell = document.createElement('td');
-        var longCell = document.createElement('td');
-        var brightCell = document.createElement('td');
+for (var i = 0; i < data.features.length; i++) {
+  var feature = data.features[i];
+  var properties = feature.properties;
 
-        latCell.innerHTML = data[i].coordinates[1];
-        longCell.innerHTML = data[i].coordinates[0];
-        brightCell.innerHTML = data[i].BRIGHTNESS;
+  var newRow = document.createElement('tr');
+  var latCell = document.createElement('td');
+  var lonCell = document.createElement('td');
+  var brightCell = document.createElement('td');
+  var confCell = document.createElement('td');
 
-        brightCell.innerHTML = checkType(data[i].BRIGHTNESS).toFixed(3)
+  latCell.innerHTML = properties.LATITUDE;
+  lonCell.innerHTML = properties.LONGITUDE;
+  brightCell.innerHTML = properties.BRIGHTNESS;
+  confCell.innerHTML = properties.CONFIDENCE;
 
 
-        // Assigning color based on brightness value using if statements.
-        if (props.BRIGHTNESS > 350) {
-              brightCell.classList.add("high-brightness");
-          } else if (props.BRIGHTNESS >= 200) {
-              brightCell.classList.add("medium-brightness");
-          } else {
-              brightCell.classList.add("low-brightness");
-          }
-          
-        row.append(latCell);
-        row.append(longCell);
-        table.append(row);
+  if (properties.CONFIDENCE > 80) {confCell.style.backgroundColor = "lightgreen";} 
+  else if (properties.CONFIDENCE >= 50) {confCell.style.backgroundColor = "yellow";} 
+  else {confCell.style.backgroundColor = "lightcoral";}
 
-    };
+  newRow.appendChild(latCell);
+  newRow.appendChild(lonCell);
+  newRow.appendChild(brightCell);
+  newRow.appendChild(confCell);
+  table.appendChild(newRow);
+}
+
 </script>
 
 </body>
