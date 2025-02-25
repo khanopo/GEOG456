@@ -14,7 +14,7 @@
     }
 
     td,th {
-        border: 1px solid black;
+        border: 1px solid #dddddd;
         text-align: left;
         padding: 10px;
     }
@@ -81,6 +81,7 @@ for (var i = 0; i < data.features.length; i++) {
   else if (properties.CONFIDENCE >= 50) {confCell.style.backgroundColor = "yellow";} 
   else {confCell.style.backgroundColor = "lightcoral";}
 
+  
   newRow.appendChild(latCell);
   newRow.appendChild(lonCell);
   newRow.appendChild(brightCell);
