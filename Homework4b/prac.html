@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Data Table</title>
+    <style>
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        /* Color coding only for Confidence column */
+        .high-confidence {
+            background-color: lightgreen;
+        }
+        .medium-confidence {
+            background-color: yellow;
+        }
+        .low-confidence {
+            background-color: lightcoral;
+        }
+    </style>
+    <script src="data.js"></script> <!-- Load your external data file -->
+</head>
+<body>
+    <h2 style="text-align: center;">Fire Data Table</h2>
+    <table id="fireTable">
+        <thead>
+            <tr>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Brightness</th>
+                <th>Confidence</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var tableBody = document.getElementById("fireTable").getElementsByTagName("tbody")[0];
+
+            data.features.forEach(function (feature) {
+                var props = feature.properties;
+                var row = tableBody.insertRow();
+
+                var latCell = row.insertCell(0);
+                var lonCell = row.insertCell(1);
+                var brightCell = row.insertCell(2);
+                var confCell = row.insertCell(3);
+
+                latCell.textContent = props.LATITUDE;
+                lonCell.textContent = props.LONGITUDE;
+                brightCell.textContent = props.BRIGHTNESS;  // Added Brightness column
+                confCell.textContent = props.CONFIDENCE;
+
+                // Assign color class only to the Confidence column
+                if (props.CONFIDENCE > 80) {
+                    confCell.classList.add("high-confidence");
+                } else if (props.CONFIDENCE >= 50) {
+                    confCell.classList.add("medium-confidence");
+                } else {
+                    confCell.classList.add("low-confidence");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

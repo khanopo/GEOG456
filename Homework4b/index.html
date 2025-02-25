@@ -1,0 +1,94 @@
+<html>
+<head>
+    <title>(HW4b) Active Fire Data</title>
+</head>
+
+<style>
+    table {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        border-radius: 8px; 
+        overflow: hidden; 
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    td,th {
+        border: 1px solid black;
+        text-align: left;
+        padding: 10px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd
+    }
+
+    .high {
+        background-color: lightgreen
+    }
+
+    .medium {
+        background-color:yellow
+    }
+
+    .low{
+        background-color: lightcoral;
+    }
+
+
+</style>
+
+<body>
+    <h1>(HW4b) Active Fire Data: Currently Burning Fires </h1>
+    <h2> The data in the table represents fire detection data in the USA contiguous states and Hawaii over a 7 day period. Brightness represents the temperature of the fire in Kelvin (K) as detected by a satelite's thermal infrared sensor. The higher the brightness the more intense the fire.</h2>
+    <table id = 'fireTable'>
+        <tr>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Brightness</th>
+
+        </tr>
+
+    </table>
+
+<script src = "data.js">
+    console.log("GeoJSON Data Loaded")
+</script>
+
+<script>
+    var table = document.getElementById('fireTable')
+    for (var i =0; i ,data.length; i++){
+        var properties = feature.properties;
+        var row = document.createElement('tr');
+
+        var latCell = document.createElement('td');
+        var longCell = document.createElement('td');
+        var brightCell = document.createElement('td');
+
+        latCell.innerHTML = data[i].coordinates[1];
+        longCell.innerHTML = data[i].coordinates[0];
+        brightCell.innerHTML = data[i].BRIGHTNESS;
+
+        brightCell.innerHTML = checkType(data[i].BRIGHTNESS).toFixed(3)
+
+
+        // Assigning color based on brightness value using if statements.
+        if (props.BRIGHTNESS > 350) {
+              brightCell.classList.add("high-brightness");
+          } else if (props.BRIGHTNESS >= 200) {
+              brightCell.classList.add("medium-brightness");
+          } else {
+              brightCell.classList.add("low-brightness");
+          }
+          
+        row.append(latCell);
+        row.append(longCell);
+        table.append(row);
+
+    };
+</script>
+
+</body>
+
+</html>
+
