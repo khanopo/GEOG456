@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active Fire Data Over 8 Days</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <script src="fireData.js"></script>
+
+    <style>
+        #map { height: 550px; width: 100%; }
+        .slider-container {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+        .slider {
+            width: 80%;
+        }
+        .tick-container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            margin-top: 5px;
+        }
+        .tick {
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <h1>Active Fire Data Over 8 Days</h1>
+    <h3>Move the slider below to display fire data for a specific day from February 11 to February 18, 2025.</h3>
+    
+    <div class="slider-container">
+        <input type="range" min="0" max="7" value="0" class="slider" id="slider" oninput="updateMap()">
+        <div class="tick-container">
+            <span class="tick">Feb 11</span>
+            <span class="tick">Feb 12</span>
+            <span class="tick">Feb 13</span>
+            <span class="tick">Feb 14</span>
+            <span class="tick">Feb 15</span>
+            <span class="tick">Feb 16</span>
+            <span class="tick">Feb 17</span>
+            <span class="tick">Feb 18</span>
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <script>
+        var map = L.map('map').setView([37.8, -96], 4);
+
+        // adding a base layer (e.g., OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // layer group for fire markers
+        var fireMarkers = L.layerGroup().addTo(map);
+
+        // update the map based on the selected day
+        function updateMap() {
+            var slider = document.getElementById('slider');
+            var selectedDay = slider.value;
+            console.log("Selected Day:", selectedDay);
+
+            // clearing existing markers
+            fireMarkers.clearLayers();
+
+            // getting the selected date
+            var selectedDate = getDateFromSlider(selectedDay);
+            console.log("Selected Date:", selectedDate);
+
+            // looping through fire data and add markers for the selected date
+            fireData.features.forEach(fire => {
+                console.log("Fire Date:", fireData.properties.ACQ_DATE);
+                if (fireData.properties.ACQ_DATE === selectedDate) {
+                    console.log("Adding marker for:", fireData.properties.ACQ_DATE);
+                    L.circleMarker([fireData.properties.LATITUDE, fireData.properties.LONGITUDE], {
+                        radius: fireData.properties.BRIGHTNESS / 100,
+                        color: 'red',
+                        fillColor: 'red',
+                        fillOpacity: 0.5
+                    }).addTo(fireMarkers);
+                }
+            });
+        }
+
+        function getDateFromSlider(value) {
+            var dates = [
+                "2024-02-11", "2024-02-12", "2024-02-13", "2024-02-14",
+                "2024-02-15", "2024-02-16", "2024-02-17", "2024-02-18"
+            ];
+            return dates[value];
+        }
+
+        updateMap();
+    </script>
+</body>
+</html>
