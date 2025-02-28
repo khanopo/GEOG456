@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
-    <script src="fireData.js"></script>
+    <script src="fire.js"></script>
 
     <style>
         #map { height: 550px; width: 100%; }
@@ -37,7 +37,7 @@
 </head>
 <body>
     <h1>Active Fire Data Over 8 Days</h1>
-    <h3>Move the slider below to display fire data for a specific day from February 11 to February 18, 2025.</h3>
+    <h3>Move the slider below to display fire data in North America for a specific day from February 11 to February 18, 2025.</h3>
     
     <div class="slider-container">
         <input type="range" min="0" max="7" value="0" class="slider" id="slider" oninput="updateMap()">
@@ -80,12 +80,12 @@
             console.log("Selected Date:", selectedDate);
 
             // looping through fire data and add markers for the selected date
-            fireData.features.forEach(fireData => {
-                console.log("Fire Date:", fireData.properties.ACQ_DATE);
-                if (fireData.properties.ACQ_DATE === selectedDate) {
-                    console.log("Adding marker for:", fireData.properties.ACQ_DATE);
-                    L.circleMarker([fireData.properties.LATITUDE, fireData.properties.LONGITUDE], {
-                        radius: fireData.properties.BRIGHTNESS / 100,
+            fire.features.forEach(fire => {
+                console.log("Fire Date:", fire.properties.ACQ_DATE);
+                if (fire.properties.ACQ_DATE === selectedDate) {
+                    console.log("Adding marker for:", fire.properties.ACQ_DATE);
+                    L.circleMarker([fire.properties.LATITUDE, fire.properties.LONGITUDE], {
+                        radius: fire.properties.BRIGHTNESS / 100,
                         color: 'red',
                         fillColor: 'red',
                         fillOpacity: 0.5
@@ -96,8 +96,8 @@
 
         function getDateFromSlider(value) {
             var dates = [
-                "2024-02-11", "2024-02-12", "2024-02-13", "2024-02-14",
-                "2024-02-15", "2024-02-16", "2024-02-17", "2024-02-18"
+                "2025-02-11", "2025-02-12", "2025-02-13", "2025-02-14",
+                "2025-02-15", "2025-02-16", "2025-02-17", "2025-02-18"
             ];
             return dates[value];
         }
