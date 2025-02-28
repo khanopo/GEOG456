@@ -80,7 +80,7 @@
             console.log("Selected Date:", selectedDate);
 
             // looping through fire data and add markers for the selected date
-            fireData.features.forEach(fire => {
+            fireData.features.forEach(fireData => {
                 console.log("Fire Date:", fireData.properties.ACQ_DATE);
                 if (fireData.properties.ACQ_DATE === selectedDate) {
                     console.log("Adding marker for:", fireData.properties.ACQ_DATE);
