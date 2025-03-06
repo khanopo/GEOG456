@@ -70,20 +70,20 @@
         function updateMap() {
             var slider = document.getElementById('slider');
             var selectedDay = slider.value;
-            console.log("Selected Day:", selectedDay);
+            // console.log("Selected Day:", selectedDay);
 
             // clearing existing markers
             fireMarkers.clearLayers();
 
             // getting the selected date
             var selectedDate = getDateFromSlider(selectedDay);
-            console.log("Selected Date:", selectedDate);
+            // console.log("Selected Date:", selectedDate);
 
             // looping through fire data and add markers for the selected date
             fire.features.forEach(fire => {
-                console.log("Fire Date:", fire.properties.ACQ_DATE);
+                // console.log("Fire Date:", fire.properties.ACQ_DATE);
                 if (fire.properties.ACQ_DATE === selectedDate) {
-                    console.log("Adding marker for:", fire.properties.ACQ_DATE);
+                    // console.log("Adding marker for:", fire.properties.ACQ_DATE);
                     L.circleMarker([fire.properties.LATITUDE, fire.properties.LONGITUDE], {
                         radius: fire.properties.BRIGHTNESS / 100,
                         color: 'red',
