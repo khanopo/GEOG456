@@ -3,155 +3,181 @@
 
 <head>
     <title>(Assessment 4) Active Fire Data </title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""/>
-
- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
- integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
- crossorigin=""></script>
- <script src = "./fire.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="./fire.js"></script>
 </head>
 
 <style>
     #container {
-        display:flex;
-        width: 100vm;
+        display: flex;
+        width: 100vw;
         height: 100vh;
     }
 
     #map {
-        height:350px;
-        width:50%
+        height: 350px;
+        width: 50%;
+    }
+
+    .slider-container {
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .slider {
+        width: 80%;
+    }
+
+    .tick-container {
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
+        margin-top: 5px;
+    }
+
+    .tick {
+        font-size: 12px;
+        color: #888;
     }
 
     #info {
-        border: 1px grey;
+        border: 1px solid grey;
         display: flex;
         align-items: flex-end;
         height: 350px;
         width: 50%;
-        background-color: rgb(158, 188, 93)green
-    }
-
-    .column {
-        border: 10%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px grey;
-        background-color: grey
     }
 
     table {
         font-family: Arial, Helvetica, sans-serif;
-        border-collapse: collapsee;
+        border-collapse: collapse;
         width: 100%;
         border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
-    td,th {
+    td, th {
         border: 1px solid #dddddd;
         text-align: left;
         padding: 10px;
     }
 
     th {
-        background-color: #f2f2f2
+        background-color: #f2f2f2;
     }
-
 </style>
 
 <body>
-    <h1 style = "font-family: 'Helvetica'; color: #007acc;">(Assessment 4) Active Fire Data: Currently Burning Fires </h1>
-    <h2 style = "font-family: 'Helvetica';"> The data in the table represents fire detection in southern US States, Central America, US territories, and Hawaii over a 7 day period.</h2>
-    <h3 style = "font-family: 'Helvetica';"> Confidence represents the likelihood that a detected hotspot is actually a fire and not indirect heat sources, where higher values indicate a higher probability that the detected thermal anomaly is indeed a fire. Brightness represents the temperature of the fire in Kelvin (K) as detected by a satelite's thermal infrared sensor. The higher the brightness the more intense the fire. Fire Radiative Power (FRP) measures the energy released by a fire in megawatts (MW) to estimate intensity.</h3>
-    <h4 style = "font-family: 'Helvetica';"> Red = Low Confidence, Yellow = Medium Confidence, Green = High Confidence</h4>
-    <h5 style = "font-family: 'Helvetica';"> Move the slider below to display fire data for a specific day from February 11 to February 18, 2025.</h5>
+    <h1 style = "font-family: 'Helvetica'; color: #007acc;">(Assessment 4) Active Fire Data: Currently Burning Fires</h1>
+    <h3 style = "font-family: 'Helvetica';">The data in the table represents fire detection in southern US States, Hawaii, and part of the Caribbean over an 8-day period.</h3>
+    <h3 style = "font-family: 'Helvetica';">Confidence represents the likelihood that a detected hotspot is actually a fire. Brightness represents fire temperature in Kelvin (K). Fire Radiative Power (FRP) measures energy released in megawatts (MW).</h5>
+    <h5 style = "font-family: 'Helvetica';">Red = Low Confidence, Yellow = Medium Confidence, Green = High Confidence</h4>
+    <h5 style = "font-family: 'Helvetica';">Move the slider below to display fire data for a specific day from February 11 to February 18, 2025.</h5>
+
+
+    <div class="slider-container">
+        <input type="range" min="0" max="7" value="0" class="slider" id="slider" oninput="updateMap()">
+        <div class="tick-container">
+            <span class="tick">Feb 11</span>
+            <span class="tick">Feb 12</span>
+            <span class="tick">Feb 13</span>
+            <span class="tick">Feb 14</span>
+            <span class="tick">Feb 15</span>
+            <span class="tick">Feb 16</span>
+            <span class="tick">Feb 17</span>
+            <span class="tick">Feb 18</span>
+        </div>
+    </div>
 
     <div id="container">
         <div id="map"></div>
         <div id="info">
-            <table id = "fireTable">
-                <tr>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
-                    <th>Brightness</th>
-                    <th>Confidence</th>
-                    <th>FRP</th>
-                </tr>
-            </thead>
-            <tbody id="fireTableBody"></tbody>
-        </table>
+            <table id="fireTable">
+                <thead>
+                    <tr>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
+                        <th>Brightness</th>
+                        <th>Confidence</th>
+                        <th>FRP</th>
+                    </tr>
+                </thead>
+                <tbody id="fireTableBody"></tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-<script>
- var map = L.map('map').setView([20, -75], 5);
+    <script>
+        var map = L.map('map').setView([20, -75], 5);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
-            attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
         function getColor(confidence) {
-            if (confidence > 80) {return "lightgreen";} 
-            else if (confidence >= 50) {return "yellow";} 
-            else {return "lightcoral";}
+            if (confidence > 80) { return "lightgreen"; }
+            else if (confidence >= 50) { return "yellow"; }
+            else { return "lightcoral"; }
         }
 
-        function onEachFeature(feature, layer) {
-            layer.on({
-                mouseover: function(e) {
-                    updateTable(e.target.feature.properties);
+        function updateMap() {
+            var slider = document.getElementById('slider');
+            var selectedDate = getDateFromSlider(slider.value);
+            if (fireLayer) {map.removeLayer(fireLayer);}
+
+            var filteredData = {
+                "type": "FeatureCollection",
+                "features": fire.features.filter(f => f.properties.ACQ_DATE === selectedDate)
+            };
+            fireLayer = L.geoJson(filteredData, {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, {
+                        radius: 5,
+                        fillColor: getColor(feature.properties.CONFIDENCE),
+                        color: '#000',
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 0.8
+                    });
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.on({
+                        mouseover: function (e) {
+                            updateTable(e.target.feature.properties);
+                        }
+                    });
                 }
-            });
+            }).addTo(map);
+        }
+
+        function getDateFromSlider(value) {
+            var dates = [
+                "2025-02-11", "2025-02-12", "2025-02-13", "2025-02-14",
+                "2025-02-15", "2025-02-16", "2025-02-17", "2025-02-18"
+            ];
+            return dates[value];
         }
 
         function updateTable(properties) {
             var tableBody = document.getElementById('fireTableBody');
             tableBody.innerHTML = "";
-
             var row = document.createElement("tr");
-            
-            var latCell = document.createElement("td");
-            latCell.textContent = properties.LATITUDE;
-            row.append(latCell);
-            
-            var lonCell = document.createElement("td");
-            lonCell.textContent = properties.LONGITUDE;
-            row.append(lonCell);
-            
-            var brightCell = document.createElement("td");
-            brightCell.textContent = properties.BRIGHTNESS;
-            row.append(brightCell);
-            
-            var confCell = document.createElement("td");
-            confCell.textContent = properties.CONFIDENCE;
-            confCell.style.backgroundColor = getColor(properties.CONFIDENCE);
-            row.append(confCell);
-            
-            var frpCell = document.createElement("td");
-            frpCell.textContent = properties.FRP;
-            row.append(frpCell);
-            
+            ["LATITUDE", "LONGITUDE", "BRIGHTNESS", "CONFIDENCE", "FRP"].forEach(prop => {
+                var cell = document.createElement("td");
+                cell.textContent = properties[prop];
+                row.append(cell);
+                if (prop === "CONFIDENCE") {
+                    cell.style.backgroundColor = getColor(properties[prop]);
+                }
+            });
             tableBody.append(row);
         }
 
-        var fireLayer = L.geoJson(fire, {
-            pointToLayer: function(feature, latlng) {
-                return L.circleMarker(latlng, {
-                    radius: 5,
-                    fillColor: getColor(feature.properties.CONFIDENCE),
-                    color: '#000',
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.8
-                });
-            },
-            onEachFeature: onEachFeature
-        }).addTo(map);
+        var fireLayer;
+        updateMap();
     </script>
 </body>
 </html>
